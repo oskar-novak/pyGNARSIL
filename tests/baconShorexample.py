@@ -18,5 +18,5 @@ end_time = time.time()
 elapsed_time = end_time - start_time
 
 print(f"Execution time: {elapsed_time:.6f} seconds\n")
-print(sols[3])
+print(sols[0])
 
