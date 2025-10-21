@@ -1,5 +1,4 @@
 import numpy as np
-import itertools
 import math
 from numba import njit, prange
 
