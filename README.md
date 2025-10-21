@@ -3,7 +3,7 @@ https://www.computer.org/csdl/proceedings-article/qce/2024/413701a109/23opYjjyty
 
 2. pyGNARSIL splits stabilizers into gauge operators!
 *Useful for CSS and non-CSS codes.
-***Use [Lx,S,Lz] form for input matrix:
+***Use $[Lx,S,Lz]$ form for input matrix:
    
 See baconShorexample.py in test for example code
 
@@ -12,6 +12,7 @@ See baconShorexample.py in test for example code
 4. Cite the original Gnarsil paper if you use this code!
 
 5. install using pip install git+https://github.com/oskar-novak/pyGNARSIL.git
+
 
 
 
