@@ -1,19 +1,27 @@
-# pyGNARSIL
+pyGNARSIL is an improved version of our original GNARSIL algorithm given in https://ieeexplore.ieee.org/document/10821364.
 
-Small package containing numba-accelerated helpers for gauge splitting.
+pyGNARSIL now is faster due to its Branch and Bound type structure, and can also support non CSS stabilizer codes.
 
-## Install locally
+To USE:
 
-```bash
-python -m venv .venv
-source .venv/bin/activate   # mac/linux
-.venv\Scripts\activate    # windows
-pip install -e .
-```
+1: Prepare Code in np array with 
+[
+L
+X
+,
+S
+,
+L
+Z
+]
+ form.
 
-## Run tests
+2: Create list with row numbers of stabilizers you wish to split
 
-```bash
-pip install pytest
-pytest -q
-```
+3: Enter weight of each gauge.
+
+4: Enter number of gauges per stabilizer.
+
+You Can use pyGNARSIL_par for a faster numba based parallel implementation
+
+Cite GNARSIL paper if used in publication.
