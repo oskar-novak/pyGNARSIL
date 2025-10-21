@@ -64,6 +64,7 @@ def pyGNARSIL(code,toSplit,weight,numPieces): #main runner
 
 
     #main loop
+    count=0
     for stabs in toSplit:
         splitArray=np.zeros((numPieces+2,n))
         splitArray[0,:]=code[stabs,:]
@@ -72,6 +73,8 @@ def pyGNARSIL(code,toSplit,weight,numPieces): #main runner
             graph=fillGauges(gaugeOps,i,splitArray)+graph
             graph.sort(key=residualWeight)
             splitArray=graph.pop(0)
+        count+=1
+        print(f"The Residual Weight for the Dependent Gauge of Stabilizer {count} is {residualWeight(splitArray)}\n")
         splitArray[-1,:]=depGauge(splitArray)
 
         solutions.append(splitArray)
@@ -90,4 +93,3 @@ def pyGNARSIL(code,toSplit,weight,numPieces): #main runner
 
 
 
-#
