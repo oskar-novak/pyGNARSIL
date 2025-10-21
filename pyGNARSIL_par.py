@@ -24,26 +24,19 @@ def residualWeight(splitArray):  # finds residual weight (heuristic)
     return np.sum(depGauge_vec)
 
 
-@njit(parallel=True,fastmath=True)
-def symplecticMatrix(x, y):
+@njit(parallel=True, fastmath=True)
+def symplecticMatrix_parallel(x, y):
     num_rows, num_cols = x.shape
     n_qubits = num_cols // 2
 
-    
     V = np.zeros((num_cols, num_cols))
     for i in range(n_qubits):
         V[i, n_qubits + i] = 1
         V[n_qubits + i, i] = 1
 
-    # compute (x @ V @ y.T) % 2
-    result = np.zeros((num_rows, y.shape[0]))
-    for i in range(num_rows):
-        for j in range(y.shape[0]):
-            s = 0
-            for k in range(num_cols):
-                for l in range(num_cols):
-                    s += x[i, k] * V[k, l] * y[j, l]
-            result[i, j] = s % 2
+    result = np.empty((num_rows, y.shape[0]))
+    for i in prange(num_rows):
+        result[i, :] = (x[i, :] @ V @ y.T) % 2
     return result
 
 
