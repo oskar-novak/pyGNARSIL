@@ -3,15 +3,45 @@ import itertools
 import math
 from numba import njit, prange
 
+@njit(fastmath=True)
+def nCr(n, r):
+    if r > n or r < 0:
+        return 0
+    if r == 0 or r == n:
+        return 1
+    num = 1
+    den = 1
+    for i in range(1, r + 1):
+        num *= n - (r - i)
+        den *= i
+    return num // den
 
+
+@njit(fastmath=True)
+def unrank_combination(idx, n, k):
+    """Return the k-combination (as an array of indices) corresponding to rank idx."""
+    combo = np.empty(k, dtype=np.int64)
+    x = 0
+    for i in range(k):
+        while nCr(n - x - 1, k - i - 1) <= idx:
+            idx -= nCr(n - x - 1, k - i - 1)
+            x += 1
+        combo[i] = x
+        x += 1
+    return combo
+
+
+@njit(parallel=True,fastmath=True)
 def bitBuilder(n, k):
-    
-    all_combos = np.array(list(itertools.combinations(range(n), k)))
-    bitStrings = np.zeros((len(all_combos), n))
-    rows = np.arange(len(all_combos))[:, None]
-    bitStrings[rows, all_combos] = 1
-    return bitStrings
+    num_combos = nCr(n, k)
+    bitStrings = np.zeros((num_combos, n))
 
+    for idx in prange(num_combos):
+        combo = unrank_combination(idx, n, k)
+        for j in range(k):
+            bitStrings[idx, combo[j]] = 1
+
+    return bitStrings
 
 @njit(parallel=True, fastmath=True)
 def depGauge(splitArray):  # finds Linearly Dependent Gauge for each split
@@ -25,7 +55,7 @@ def residualWeight(splitArray):  # finds residual weight (heuristic)
 
 
 @njit(parallel=True, fastmath=True)
-def symplecticMatrix_parallel(x, y):
+def symplecticMatrix(x, y):
     num_rows, num_cols = x.shape
     n_qubits = num_cols // 2
 
