@@ -8,12 +8,13 @@ Uses a new parallelized graph optimization strategy, which speeds things up a lo
    
 See baconShorexample.py in tests for example code
 
-3. Code written  Parallelized using Numba: making the code scale much better.
+3. Code parallelized using Numba: making the code scale much better.
 ** This requires the code to compile the first time!
 
 4. Cite the original Gnarsil paper if you use this code!
 
 5. install using pip install git+https://github.com/oskar-novak/pyGNARSIL.git
+
 
 
 
