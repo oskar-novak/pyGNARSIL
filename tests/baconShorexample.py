@@ -1,4 +1,5 @@
 import time
+import numpy as np
 from pyGNARSIL import pyGNARSIL_par
 Sz=np.array([[1,1,1,1,1,1,0,0,0],[0,0,0,1,1,1,1,1,1]])
 Sx=np.array([[1,1,0,1,1,0,1,1,0],[0,1,1,0,1,1,0,1,1]])
