@@ -3,15 +3,18 @@ https://www.computer.org/csdl/proceedings-article/qce/2024/413701a109/23opYjjyty
 
 2. pyGNARSIL splits stabilizers into gauge operators!
 *Useful for CSS and non-CSS codes.
+Uses a new parallelized graph optimization strategy, which speeds things up a lot.
 ***Use $[Lx,S,Lz]$ form for input matrix:
    
 See baconShorexample.py in tests for example code
 
-3. Code written using Numba Parallel methods, giving fast, and better scaling performance-> though the first time, the complilation will take some time
+3. Code written  Parallelized using Numba: making the code scale much better.
+** This requires the code to compile the first time!
 
 4. Cite the original Gnarsil paper if you use this code!
 
 5. install using pip install git+https://github.com/oskar-novak/pyGNARSIL.git
+
 
 
 
