@@ -12,5 +12,7 @@ To USE:
 
 4: Enter number of gauges per stabilizer.
 
+You Can use pyGNARSIL_par for a faster numba based parallel implementation
+
 Cite GNARSIL paper if used in publication.
 
