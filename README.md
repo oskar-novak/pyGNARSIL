@@ -11,3 +11,6 @@ See baconShorexample.py in test for example code
 
 4. Cite the original Gnarsil paper if you use this code!
 
+5. install using pip install git+
+
+
