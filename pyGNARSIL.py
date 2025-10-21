@@ -5,22 +5,26 @@ import itertools
 import math
 
 
-def bitBuilder(n,k): #finds all weight k binary strings
-    seed=list(range(n))
-    bitStrings=np.zeros((math.comb(n,k),n))
-    all_combos = np.array(list(itertools.combinations(seed, k)))
-    map=np.eye(n)
-    for i in  range(all_combos.shape[0]):
-        bitStrings[i,:]=np.sum(map[all_combos[i, :]], axis=0)
+def bitBuilder(n, k):
+   
+    all_combos = np.array(list(itertools.combinations(range(n), k)))
+    
+   
+    bitStrings = np.zeros((len(all_combos), n))
+    
+    
+    rows = np.arange(len(all_combos))[:, None]  
+    bitStrings[rows, all_combos] = 1
+
     return bitStrings
-        
+def depGauge(splitArray): #finds Linearly Dependent Gauge for each split
+    return np.sum(splitArray,axis=0) %2        
 def residualWeight(splitArray): #finds residual weight (heuristic) for each stabilizer split
      depGauge=np.sum(splitArray,axis=0) %2 
     
      return np.sum(depGauge)
 
-def depGauge(splitArray): #finds Linearly Dependent Gauge for each split
-    return np.sum(splitArray,axis=0) %2 
+
 
 
 def symplecticMatrix(x, y): #compact way to find commutativity relations between Pauli Ops
@@ -33,15 +37,21 @@ def symplecticMatrix(x, y): #compact way to find commutativity relations between
     return (x @ V @ y.T) % 2
 
 
-def fillGauges(gaugeOps,idx,splitArray):
-     newArrays=[]
-     for gauge in gaugeOps:
-         if not np.any(np.all(splitArray == gauge, axis=1)): #Check for Duplicates
-             splitArray[idx,:]=gauge
-             newArrays.append(splitArray.copy())
-             splitArray[idx,:]=np.zeros(splitArray.shape[1])
-
-     return newArrays
+def fillGauges(gaugeOps, idx, splitArray):
+    
+    is_dup = (gaugeOps[:, None, :] == splitArray[None, :, :]).all(axis=2).any(axis=1)
+    unique_gauges = gaugeOps[~is_dup] 
+    
+   
+    base = splitArray.copy()
+    
+    
+    newArrays = np.repeat(base[None, :, :], len(unique_gauges), axis=0)
+    
+    
+    newArrays[:, idx, :] = unique_gauges
+    
+    return [arr for arr in newArrays]
     
 def pyGNARSIL(code,toSplit,weight,numPieces): #main runner
     #code assumes [Lx;S;Lz] form
@@ -65,6 +75,7 @@ def pyGNARSIL(code,toSplit,weight,numPieces): #main runner
 
     #main loop
     count=0
+    
     for stabs in toSplit:
         splitArray=np.zeros((numPieces+2,n))
         splitArray[0,:]=code[stabs,:]
@@ -78,7 +89,11 @@ def pyGNARSIL(code,toSplit,weight,numPieces): #main runner
         splitArray[-1,:]=depGauge(splitArray)
 
         solutions.append(splitArray)
+    
+    
     return solutions
+
+
 
 
 
